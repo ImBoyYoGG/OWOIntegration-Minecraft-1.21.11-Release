@@ -1,0 +1,230 @@
+[
+  {
+    "id": "12a55626-5d30-4ff2-af2a-641c9000360d",
+    "name": "Fire",
+    "intensity": 0.5,
+    "code": "Muscles lower \u003d [abdominal_r, abdominal_l, lumbar_r, lumbar_l];\nMuscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027in_fire\u0027 || type \u003d\u003d \"on_fire\" || type \u003d\u003d \"campfire\" || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d (amount / rawAmount) * 85;\n        let bleed \u003d (amount / rawAmount) * 65;\n        PlaySensation(lower,70,calculated_amount, 100, 0, 0, 0);\n        PlaySensation(every,70,calculated_amount, 200, 0, 0, 0);\n        PlaySensation(every,50,bleed, 1000, 0, 900, 0);\n    }\n}"
+  },
+  {
+    "id": "8f761679-bc91-4cc2-9794-40d2c8d3da1c",
+    "name": "Lightning bolt",
+    "intensity": 0.5,
+    "code": "Muscles lower \u003d [abdominal_r, abdominal_l, lumbar_r, lumbar_l];\nMuscles upper \u003d [pectoral_r, pectoral_l, arm_r, arm_l, dorsal_l, dorsal_r];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027lightning_bolt\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d (amount / rawAmount) * 80;\n        PlaySensation(upper[random(0,5)],100,calculated_amount, 100, 0, 0, 0);\n        PlaySensation(lower[random(0,3)],100,calculated_amount, 100, 0, 0, 0);\n    }\n}"
+  },
+  {
+    "id": "9576cc2f-5217-49da-a308-e6e0da1d96eb",
+    "name": "Lava",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027lava\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d (amount / rawAmount) * 90;\n        let bleed \u003d (amount / rawAmount) * 65;\n        PlaySensation(every,70,calculated_amount, 100, 0, 0, 100);\n        PlaySensation(every,70,calculated_amount, 200, 0, 0, 0);\n        PlaySensation(every,50,bleed, 1000, 0, 900, 0);\n    }\n}"
+  },
+  {
+    "id": "f572d3f1-193a-4928-aca7-7818a3cf142f",
+    "name": "Magma Block",
+    "intensity": 0.5,
+    "code": "Muscles lower \u003d [abdominal_r, abdominal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027hot_floor\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d (amount / rawAmount) * 85;\n        let bleed \u003d (amount / rawAmount) * 65;\n        PlaySensation(lower,70,calculated_amount, 100, 0, 0, 0);\n        PlaySensation(lower,50,bleed, 1000, 0, 900, 0);\n    }\n}"
+  },
+  {
+    "id": "f564567b-f124-4447-8af7-3afd61f136b3",
+    "name": "Squished",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027in_wall\u0027 || type \u003d\u003d \"cramming\" || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d (amount / rawAmount) * 85;\n        PlaySensation(every,20,calculated_amount, 500, 0, 200, 0);\n    }\n}"
+  },
+  {
+    "id": "50a216ca-ae3c-4914-8ef0-7e3f8c76506a",
+    "name": "Drown",
+    "intensity": 0.5,
+    "code": "Muscles chest \u003d [pectoral_r, pectoral_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027drown\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 10) * 85;\n        PlaySensation(chest,100,calculated_amount, 1000, 100, 200, 0);\n    }\n}"
+  },
+  {
+    "id": "8e2c062b-92a2-48f9-9a1a-f7bdd24481a7",
+    "name": "Starve",
+    "intensity": 0.50086504,
+    "code": "Muscles abdominal \u003d [abdominal_r, abdominal_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027starve\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 10) * 85;\n        PlaySensation(abdominal,5,calculated_amount, 1000, 100, 200, 0);\n    }\n}"
+  },
+  {
+    "id": "c6192c37-4345-4808-b45f-f06ec1020ae6",
+    "name": "Cactus",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027cactus\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 10) * 85;\n        PlaySensation(every,30,calculated_amount, 100, 0, 0, 100);\n        PlaySensation(every,20,calculated_amount, 100, 0, 0, 0);\n    }\n}"
+  },
+  {
+    "id": "5ece7841-8809-4998-bb08-29ddba0dd12b",
+    "name": "Fall",
+    "intensity": 0.5,
+    "code": "Muscles break \u003d [abdominal_r, abdominal_l, dorsal_r, dorsal_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027fall\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 10) * 85;\n        PlaySensation(break,50,calculated_amount, 200, 200, 0, 0);\n    }\n}"
+  },
+  {
+    "id": "891c1b0b-8c89-4fed-8d92-f633f951b459",
+    "name": "Ender Pearl",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027ender_pearl\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d (amount / rawAmount) * 85;\n        PlaySensation(every,100,calculated_amount, 200, 200, 0, 100);\n        PlaySensation(every,20,calculated_amount, 200, 0, 0, 100);\n        PlaySensation(every,100,calculated_amount, 1000, 0, 1000, 0);\n    }\n}"
+  },
+  {
+    "id": "3c835f58-5c96-4a56-ab88-2666f2d0c9e1",
+    "name": "Fly Into Wall",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027fly_into_wall\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 10) * 85;\n        PlaySensation(every,70,calculated_amount, 5000, 0, 2000, 0);\n    }\n}"
+  },
+  {
+    "id": "a8d92015-a104-468c-b0e2-b777025eed1d",
+    "name": "Out Of World",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027out_of_world\u0027 || type \u003d\u003d \"outside_border\" || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d (amount / rawAmount) * 100;\n        let index \u003d 100;\n        repeat(10) {\n            log({index});\n            PlaySensation(every,index,calculated_amount, 100, 0, 0, 100);\n            index -\u003d 10;\n        }\n    }\n}"
+  },
+  {
+    "id": "8de462f3-2f96-418e-ae6a-f2c5fa5bc0bd",
+    "name": "Generic",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027generic\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 10) * 85;\n        PlaySensation(every,100,calculated_amount, 1000, 200, 200, 0);\n    }\n}"
+  },
+  {
+    "id": "928897b9-eb15-4f2c-b369-ed34f4f8c7eb",
+    "name": "Magic",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027magic\u0027 || type \u003d\u003d \u0027indirect_magic\u0027 ||type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 10) * 85;\n        repeat(20) {\n            PlaySensation(every[random(0,9)],random(30,100),calculated_amount + random(-10,10), random(50,200), 0, 0, random(50,100));\n        }\n    }\n}"
+  },
+  {
+    "id": "30a8e778-3776-4b06-b95a-ebe12b192831",
+    "name": "Wither",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027wither\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d (amount / rawAmount) * 50;\n        repeat(3) {\n            PlaySensation(every,calculated_amount,calculated_amount, 400, 300, 100, 0);    \n            calculated_amount +\u003d 10\n        }   \n    }\n}"
+  },
+  {
+    "id": "8dea205f-07f1-454f-a24d-b2e02cd0c42c",
+    "name": "Sweet Berry Bush",
+    "intensity": 0.5,
+    "code": "Muscles lower \u003d [abdominal_r, abdominal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027sweet_berry_bush\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d (amount / rawAmount) * 85;\n        PlaySensation(lower,20,calculated_amount, 100, 0, 0, 0);\n    }\n}"
+  },
+  {
+    "id": "841af821-828a-4ab9-bcaf-07b38dc18ad3",
+    "name": "Freeze",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027freeze\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d (amount / rawAmount) * 85;\n        PlaySensation(every,10,calculated_amount, 1000, 200, 200, 0);\n    }\n}"
+  },
+  {
+    "id": "5cd711c9-62f1-4fc4-b302-6c697f3c540e",
+    "name": "Stalagmite",
+    "intensity": 0.5,
+    "code": "Muscles lower \u003d [abdominal_r, abdominal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027stalagmite\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d (amount / rawAmount) * 85;\n        let bleed \u003d (amount / rawAmount) * 65;\n        PlaySensation(lower,70,calculated_amount, 100, 0, 0, 0);\n        PlaySensation(lower,50,bleed, 1000, 0, 500, 0);\n    }\n}"
+  },
+  {
+    "id": "042083f9-633d-4133-9282-149695c1084b",
+    "name": "Falling Anvil",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027falling_anvil\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 10) * 85;\n        PlaySensation(every,100,calculated_amount, 300, 0, 0, 0);\n        repeat(5) {\n            PlaySensation(every,50,calculated_amount, 400, 200, 200, 0);\n        }\n    }\n}"
+  },
+  {
+    "id": "4582de50-cbeb-4af2-9704-4dd5838bf8be",
+    "name": "Falling Stalactite",
+    "intensity": 0.5,
+    "code": "Muscles fall1 \u003d [pectoral_l,arm_l,abdominal_l];\nMuscles fall2 \u003d [pectoral_r,arm_r,abdominal_r];\nMuscles fall3 \u003d [dorsal_l, lumbar_l];\nMuscles fall4 \u003d [dorsal_r, lumbar_r];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027falling_stalactite\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 10) * 85;\n        let rand \u003d random(1,4);\n        Muscles toPlay \u003d [];\n        let index \u003d 0;\n        if (rand \u003d\u003d 1) {\n            repeat(3) {\n                toPlay.add(fall1[index]);\n                PlaySensation(toPlay,100,calculated_amount, 100, 0, 0, 0);\n                index +\u003d 1;\n            }\n        } elif (rand \u003d\u003d 2) {\n            repeat(3) {\n                log({index});\n                toPlay.add(fall2[index]);\n                PlaySensation(toPlay,100,calculated_amount, 100, 0, 0, 0);\n                index +\u003d 1;\n            }\n        } elif (rand \u003d\u003d 3) {\n            repeat(2) {\n                log({index});\n                toPlay.add(fall3[index]);\n                PlaySensation(toPlay,100,calculated_amount, 100, 0, 0, 0);\n                index +\u003d 1;\n            }\n        } elif (rand \u003d\u003d 4) {\n            repeat(2) {\n                log({index});\n                toPlay.add(fall4[index]);\n                PlaySensation(toPlay,100,calculated_amount, 100, 0, 0, 0);\n                index +\u003d 1;\n            }\n        }\n    }\n}"
+  },
+  {
+    "id": "ee6d3f10-f4d0-49eb-b020-b416c3bdf40e",
+    "name": "Sting",
+    "intensity": 0.5,
+    "code": "OnDamage() {\n    if (type \u003d\u003d \u0027sting\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d (amount / rawAmount) * 65;\n        PlaySensation(regions[0],95,calculated_amount, 100, 0, 0, 0);\n    }\n}"
+  },
+  {
+    "id": "d0ddc763-a865-4976-a42c-b47381c10ed3",
+    "name": "Mob Attack",
+    "intensity": 0.5,
+    "code": "OnDamage() {\n    if (type \u003d\u003d \u0027mob_attack\u0027 || type \u003d\u003d \u0027player_attack\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 15 + 0.5) * 80;\n        PlaySensation(regions[0],100,calculated_amount, 200, 0, 0, 0);\n        if (calculated_amount \u003e 50) {\n            PlaySensation(regions[0],65,calculated_amount - 10, 1000, 0, 200, 0);\n        }\n    }\n}"
+  },
+  {
+    "id": "26e1a8c0-4778-4fba-b7f8-63631d4abdb9",
+    "name": "Goat Attack",
+    "intensity": 0.5,
+    "code": "OnDamage() {\n    if (type \u003d\u003d \u0027mob_attack_no_aggro\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d (amount / rawAmount) * 85;\n        PlaySensation(regions,100,calculated_amount, 1000, 200, 200, 0);\n    }\n}"
+  },
+  {
+    "id": "de88d370-b78d-48ab-9a10-2c365e34bf0a",
+    "name": "Spear",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027spear\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 10) * 85;\n        repeat(5) {\n            PlaySensation(regions,100,calculated_amount, 100, 0, 0, 100);\n        };\n        PlaySensation(every,65,calculated_amount, 1000, 0, 200, 0);\n    }\n}"
+  },
+  {
+    "id": "c04e8e0b-41a4-4532-9d71-e55ceb6c6f55",
+    "name": "Arrow",
+    "intensity": 0.5,
+    "code": "OnDamage() {\n    if (type \u003d\u003d \u0027mob_projectile\u0027 || type \u003d\u003d \u0027arrow\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 10) * 75;\n        Muscles toPlay \u003d [regions[0],regions[1]];\n        PlaySensation(toPlay,75,calculated_amount, 200, 0, 0, 0);\n        PlaySensation(regions[0],35,calculated_amount - 10, 1000, 0, 200, 0);\n    }\n}"
+  },
+  {
+    "id": "eb72f66d-4a86-42a6-bf6f-9c522ba6315a",
+    "name": "Trident",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027trident\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 10) * 85;\n        PlaySensation(regions,100,calculated_amount, 300, 0, 0, 0);\n        PlaySensation(every,70,calculated_amount, 1000, 0, 200, 0);\n    }\n}"
+  },
+  {
+    "id": "4a04ca16-eb3c-4700-85c3-871bea263bd4",
+    "name": "Spit",
+    "intensity": 0.5,
+    "code": "OnDamage() {\n    if (type \u003d\u003d \u0027spit\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d (amount / rawAmount) * 50;\n        PlaySensation(regions[0],10,calculated_amount, 100, 0, 0, 0);\n    }\n}"
+  },
+  {
+    "id": "47359011-5cb3-4058-a04a-91a4ab6ec5ae",
+    "name": "Wind Charge",
+    "intensity": 0.5,
+    "code": "OnDamage() {\n    if (type \u003d\u003d \u0027wind_charge\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d (amount / rawAmount) * 70;\n        let index \u003d 30;\n        \n        repeat(3) {\n            PlaySensation(regions, 50 + index, calculated_amount, 250, 100, 100, 0);\n            PlaySensation(regions, 50 - index, calculated_amount, 250, 100, 100, 0);\n            let index \u003d index - 10; \n        }\n    }\n}"
+  },
+  {
+    "id": "81c4d64b-e648-41fc-9cea-3e406a3d4f3f",
+    "name": "Fireworks",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027fireworks\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 10) * 85;\n        PlaySensation(every,100,calculated_amount, 100, 0, 0, 100);\n        PlaySensation(every,100,calculated_amount, 100, 0, 0, 100);\n        repeat(5) {\n            Muscles toPlay \u003d [every[random(0,9)],every[random(0,9)],every[random(0,9)]];\n            PlaySensation(toPlay,70,calculated_amount, 100, 0, 0, 0);\n        }\n    }\n}"
+  },
+  {
+    "id": "9c9ecf78-df11-4e4b-8477-9b9cd3375d46",
+    "name": "Fireball",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027unattributed_fireball\u0027 || type \u003d\u003d \u0027fireball\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 10) * 85;\n        repeat(2) {\n            PlaySensation(every,50,calculated_amount, 100, 0, 0, 100);\n        };\n        wait(100);\n        PlaySensation(every,15,calculated_amount,1000, 0, 500, 0);\n    }\n}"
+  },
+  {
+    "id": "ae994cbd-dd5a-478c-a6c1-1593a398052a",
+    "name": "Wither Skull",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027wither_skull\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d (amount / rawAmount) * 50;\n        PlaySensation(every,100,calculated_amount + 30, 100, 0, 0, 100);\n        repeat(3) {\n            PlaySensation(every,calculated_amount,calculated_amount, 400, 300, 100, 0);    \n            calculated_amount +\u003d 10;\n        };\n    }\n}"
+  },
+  {
+    "id": "2938c734-b28c-446a-ad9a-51baa0d3b976",
+    "name": "Thrown",
+    "intensity": 0.5,
+    "code": "Muscles arms \u003d [arm_r, arm_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027thrown\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 10) * 85;\n        PlaySensation(arms,100,calculated_amount, 1000, 200, 200, 0);\n    }\n}"
+  },
+  {
+    "id": "be9b4219-a11d-421b-8cfd-f2b38574c320",
+    "name": "Thorns",
+    "intensity": 0.5,
+    "code": "Muscles arms \u003d [arm_r, arm_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027thorns\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 10) * 85;\n        PlaySensation(arms,7,calculated_amount, 1000, 200, 200, 0);\n    }\n}"
+  },
+  {
+    "id": "87118341-f49a-4010-8e96-99333e16d9de",
+    "name": "Explosion",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027explosion\u0027 || type \u003d\u003d \u0027player_explosion\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 10) * 85;\n        PlaySensation(every,100,calculated_amount, 100, 0, 0, 100);\n        PlaySensation(every,100,calculated_amount, 100, 0, 0, 0);\n        PlaySensation(every,50,calculated_amount, 1200, 0, 900, 0);\n    }\n}"
+  },
+  {
+    "id": "f8b1778f-a668-4a02-a902-b5bb6d197e1a",
+    "name": "Sonic Boom",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027sonic_boom\u0027 || type \u003d\u003d \"test\") {\n        repeat(10) {\n            PlaySensation(every, 100, 100, 100, 0, 0, 100);\n        };\n        PlaySensation(every, 10, 100, 10000, 0, 5000, 0);\n    }\n}"
+  },
+  {
+    "id": "48e71e16-80d3-4bde-bf1b-10cce71b8b1c",
+    "name": "Respawn Point Explosion",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027bad_respawn_point\u0027 || type \u003d\u003d \"test\") {\n        let calculated_amount \u003d ((amount / rawAmount) * amount / 10) * 85;\n        PlaySensation(every,100,calculated_amount, 100, 0, 0, 100);\n        PlaySensation(every,100,calculated_amount, 100, 0, 0, 100);\n        repeat(5) {\n            Muscles toPlay \u003d [every[random(0,9)],every[random(0,9)]];\n            PlaySensation(toPlay, 30, 100, 100, 0, 0, 0);\n        }\n    }\n}"
+  },
+  {
+    "id": "a7d371a9-9ff1-442d-b2d1-fcab6c89908f",
+    "name": "Generic Kill",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027generic_kill\u0027 || type \u003d\u003d \"test\") {\n        PlaySensation(every, 100, 100, 1000, 200, 200, 0);\n    }\n}"
+  },
+  {
+    "id": "41503b9e-3272-4837-a727-b16f8df359b1",
+    "name": "Mace Smash",
+    "intensity": 0.5,
+    "code": "Muscles every \u003d [abdominal_r, abdominal_l, pectoral_r, pectoral_l, arm_r, arm_l, dorsal_r, dorsal_l, lumbar_r, lumbar_l];\nMuscles lower \u003d [abdominal_r,abdominal_l,lumbar_r,lumbar_l]\nMuscles upper \u003d [pectoral_r, pectoral_l, dorsal_r, dorsal_l, arm_r, arm_l];\n\nOnDamage() {\n    if (type \u003d\u003d \u0027mace_smash\u0027 || type \u003d\u003d \"test\") {\n        PlaySensation(upper, 100, 100, 100, 0, 0, 100);\n        PlaySensation(lower, 100, 100, 100, 0, 0, 100);\n        PlaySensation(every, 10, 100, 10000, 0, 5000, 0);\n    }\n}"
+  }
+]

@@ -1,0 +1,82 @@
+[
+  {
+    "x": 4.0,
+    "y": 8.0,
+    "width": 4.0,
+    "height": 6.0,
+    "assignedMuscle": "PECTORAL_L",
+    "is_front": true
+  },
+  {
+    "x": 8.0,
+    "y": 8.0,
+    "width": 4.0,
+    "height": 6.0,
+    "assignedMuscle": "PECTORAL_R",
+    "is_front": true
+  },
+  {
+    "x": 0.0,
+    "y": 8.0,
+    "width": 4.0,
+    "height": 6.0,
+    "assignedMuscle": "ARM_L",
+    "is_front": true
+  },
+  {
+    "x": 12.0,
+    "y": 8.0,
+    "width": 4.0,
+    "height": 6.0,
+    "assignedMuscle": "ARM_R",
+    "is_front": true
+  },
+  {
+    "x": 4.0,
+    "y": 14.0,
+    "width": 4.0,
+    "height": 6.0,
+    "assignedMuscle": "ABDOMINAL_L",
+    "is_front": true
+  },
+  {
+    "x": 8.0,
+    "y": 14.0,
+    "width": 4.0,
+    "height": 6.0,
+    "assignedMuscle": "ABDOMINAL_R",
+    "is_front": true
+  },
+  {
+    "x": 4.0,
+    "y": 15.0,
+    "width": 4.0,
+    "height": 5.0,
+    "assignedMuscle": "DORSAL_L",
+    "is_front": false
+  },
+  {
+    "x": 8.0,
+    "y": 15.0,
+    "width": 4.0,
+    "height": 5.0,
+    "assignedMuscle": "DORSAL_R",
+    "is_front": false
+  },
+  {
+    "x": 4.0,
+    "y": 8.0,
+    "width": 4.0,
+    "height": 7.0,
+    "assignedMuscle": "LUMBAR_L",
+    "is_front": false
+  },
+  {
+    "x": 8.0,
+    "y": 8.0,
+    "width": 4.0,
+    "height": 7.0,
+    "assignedMuscle": "LUMBAR_R",
+    "is_front": false
+  }
+]
