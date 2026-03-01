@@ -1,0 +1,285 @@
+DSL Documentation (v1.0)
+
+A complete, implementation-accurate reference for the custom DSL used by the Sensation mod. This document combines the basics you already wrote plus additional built-ins, rules, behavior notes, and examples so authors won’t be surprised at runtime.
+
+1. Entry Point
+OnDamage() { ... };
+
+This block runs when:
+
+The player takes damage, or
+
+The Play button is pressed in the editor.
+
+All script logic for a run must be inside this block.
+
+2. Comments & Strings
+
+Single-line comments: // comment text
+
+Strings: single or double quotes supported: 'hello' or "hello".
+
+Supports escaping: \", \', \\, \n, \t, etc.
+
+3. Semicolons & Block Endings
+
+Every statement must end with a semicolon: let x = 5;
+
+Blocks (if, elif, else, repeat, etc.) end with } and the enclosing block is followed by ; when required in your DSL style: e.g.
+
+if (cond) {
+  // ...
+} else {
+  // ...
+};
+4. Identifiers & Reserved Words
+
+Valid variable names: start with a letter (A–Z, a–z), then letters, digits or underscores. Example: var1, my_value.
+
+Reserved keywords (cannot be used as identifiers):
+if, elif, else, repeat, wait, let, Muscles, PlaySensation, OnDamage, log, random, abs, clamp, UNKNOWN
+
+Muscle and BodyRegion names are case-insensitive (you may use arm_l or ARM_L).
+
+5. Variables
+
+Declare with let:
+
+let intensity = 80;
+
+Variables are typed implicitly by value and must be used in type-appropriate contexts.
+
+Scope: variables declared during a single OnDamage() execution are global to that execution — assignments inside if/repeat change the value for later statements in the same OnDamage run.
+
+6. Conditionals
+
+if, elif, else allow branching.
+
+Syntax:
+
+if (condition) {
+  // runs if condition true
+} elif (condition2) {
+  // runs if first false and second true
+} else {
+  // runs if all above false
+};
+
+Supported condition types: numeric comparisons, string comparisons, boolean expressions, variable comparisons.
+
+7. Boolean & Comparison Operators
+
+Comparison: ==, !=, <, >, <=, >=
+
+Strings: equality checks are case-insensitive.
+
+Logical: && (and), || (or), ! (not)
+
+Example:
+
+if (amount > 5 && type == "fire") { ... };
+8. Math, Precedence & Expressions
+
+Supported arithmetic: +, -, *, /, ^ (power)
+
+Unary - is supported. Parentheses control precedence.
+
+Standard precedence rules apply (power > multiply/divide > add/subtract). Parentheses evaluate first.
+
+Examples:
+
+let x = (amount * 2) + 5;
+let p = 2 ^ 3; // 8
+9. Built-in Functions
+
+random(min, max) — returns an integer in [min, max] (inclusive). Arguments may be expressions.
+
+abs(x) — absolute value.
+
+clamp(value, min, max) — clamps value between min and max.
+
+log(stringOrExpression) — compiler supports placeholders: log("hit {amount}") will replace {amount} with the variable value. Numeric expressions inside braces are evaluated.
+
+Examples:
+
+let r = random(10, 90);
+log("intensity set to {r}");
+10. Muscles Type & Groups
+
+Muscles is a special type used by PlaySensation.
+
+Declaration:
+
+Muscles group1 = [ABDOMINAL_L, ABDOMINAL_R];
+
+Muscle names (case-insensitive):
+
+PECTORAL_L, PECTORAL_R
+
+DORSAL_L, DORSAL_R
+
+ARM_L, ARM_R
+
+ABDOMINAL_L, ABDOMINAL_R
+
+LUMBAR_L, LUMBAR_R
+
+Special group: Muscles all — maps to every region except UNKNOWN (convenience macro).
+
+Helper: group.at("REGION_NAME") may be used in expressions to resolve an index for a named region (implementation pre-resolves some .at(...) calls).
+
+11. Arrays & regions
+
+regions is a runtime-provided array of BodyRegion identifiers where damage occurred.
+
+Indexing is zero-based: regions[0] is the first hit region.
+
+Out-of-range index or empty regions returns UNKNOWN.
+
+Example:
+
+PlaySensation(regions[0], 90, 80, 800, 100, 100, 0);
+12. Array Methods (implementation-accurate)
+
+Note: these behaviors match the current compiler/runtime implementation. They differ slightly from a naïve API expectation — check carefully.
+
+.add(...) — adds a region to the group. Implementation detail: it resolves the argument and adds the first resolved region (not an arbitrary multi-value expansion). Use with a single muscle expression or index.
+
+group1.add(ARM_L);
+
+.remove(index) — expects an index (integer). Example: group1.remove(0); removes the first element.
+
+.index(...) — NOT implemented in the current runtime. Do not rely on it; use other helpers instead.
+
+13. PlaySensation(...) — Core Function
+
+Signature (7 arguments):
+
+PlaySensation(
+  Muscles,   // target muscles (Muscles type or single region expression)
+  Frequency, // 1–100 (integer)
+  Intensity, // 0–100 (integer)
+  Duration,  // ms (integer)
+  FadeIn,    // ms
+  FadeOut,   // ms
+  ExitTime   // ms
+);
+
+Timing semantics: the timeline advances by Duration + ExitTime after this instruction. The next instruction’s execution time is delayed by that amount.
+
+Target resolution:
+
+Literal muscle names and simple Muscles groups are usually resolved at compile time.
+
+Expressions involving regions, random(...), or runtime variables are resolved at runtime — i.e., they can change per execution.
+
+Example:
+
+PlaySensation(ABDOMINAL_L, 100, 85, 1000, 200, 200, 0);
+14. wait(ms); — Pause
+
+wait(ms); pauses the script timeline for ms milliseconds before continuing to the next instruction.
+
+Example:
+
+wait(500); // wait half a second
+15. repeat(count) { ... };
+
+Repeats the enclosed block count times.
+
+Example:
+
+repeat(3) {
+  PlaySensation(ARM_L, 80, 60, 500, 100, 100, 0);
+};
+
+Variables modified inside a repeat iteration persist to subsequent iterations and to the remainder of the OnDamage() run.
+
+16. OnDamage Built-in Variables
+
+Inside OnDamage() you have these pre-filled variables:
+
+type → damage type (string)
+
+regions → array of BodyRegion identifiers hit (may be empty)
+
+use regions[0], regions[1], etc.; out-of-range → UNKNOWN
+
+amount → final damage after armor
+
+rawAmount → damage before armor
+
+Example:
+
+if (amount > 5) {
+  PlaySensation(regions[0], 90, 80, 800, 100, 100, 0);
+};
+17. Type Coercion & Comparison Rules
+
+Numbers compare numerically.
+
+Strings compare case-insensitively for == and !=.
+
+If you compare mismatched types, the runtime will attempt reasonable coercion (numbers ↔ strings). If coercion fails, comparisons evaluate to false (safe default).
+
+Invalid expressions typically evaluate to 0 or UNKNOWN (not a runtime crash).
+
+18. Error & Fallback Behavior
+
+Invalid muscle/region names or out-of-bounds indices return UNKNOWN.
+
+Invalid numeric expressions return 0 as a safe fallback.
+
+Compiler/runtime attempts to fail-safe rather than throw unhandled exceptions at runtime.
+
+19. Timing & Compile vs. Runtime Resolution (Important)
+
+Some parts of the script are compile-time analyzable (literals, static muscle lists); others (anything using regions, random, or runtime variables) are resolved at runtime.
+
+Timing estimation in tooling (editor preview) may use compile-time values; actual runtime values are what determine final timing and targets.
+
+20. Examples (complete snippets)
+Example 1 — Simple conditional
+OnDamage() {
+  if (amount > 5) {
+    PlaySensation(ABDOMINAL_L, 100, 85, 1000, 200, 200, 0);
+  } elif (type == "fire") {
+    PlaySensation(ARM_L, 80, 60, 600, 100, 100, 100);
+  } else {
+    wait(200);
+    repeat(2) {
+      PlaySensation(PECTORAL_L, 60, 40, 300, 50, 50, 50);
+    };
+  };
+};
+Example 2 — Variables and randomness
+OnDamage() {
+  let i = random(20, 80);
+  log("random intensity {i}");
+  PlaySensation(ABDOMINAL_R, 90, i, 500, 50, 50, 0);
+};
+Example 3 — Using regions safely
+OnDamage() {
+  // play on first region if it exists; otherwise on PECTORAL_L
+  let target = regions[0] == UNKNOWN ? PECTORAL_L : regions[0];
+  PlaySensation(target, 70, 60, 700, 100, 100, 50);
+};
+21. Short Checklist for Authors
+
+Put all code inside OnDamage() { ... };
+
+End statements with ; and close blocks with } (and ; where shown)
+
+Use let to declare variables
+
+Use zero-based indexing for regions
+
+Strings may be single- or double-quoted
+
+Use wait(ms); and PlaySensation(...) to control timeline flow
+
+Use random(min,max) for variability
+
+Expect safe fallbacks (UNKNOWN, 0) on invalid inputs
+
+Follow the corrected array-method behaviors (.add single item, .remove(index), .index() not available)
