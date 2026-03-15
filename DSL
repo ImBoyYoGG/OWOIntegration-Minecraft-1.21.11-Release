@@ -1,8 +1,9 @@
-DSL Documentation (v1.0)
+DSL Documentation (v1.1)
 
 A complete, implementation-accurate reference for the custom DSL used by the Sensation mod. This document combines the basics you already wrote plus additional built-ins, rules, behavior notes, and examples so authors won’t be surprised at runtime.
 
 1. Entry Point
+
 OnDamage() { ... };
 
 This block runs when:
@@ -25,7 +26,7 @@ Supports escaping: \", \', \\, \n, \t, etc.
 
 Every statement must end with a semicolon: let x = 5;
 
-Blocks (if, elif, else, repeat, etc.) end with } and the enclosing block is followed by ; when required in your DSL style: e.g.
+Blocks (if, elif, else, repeat, etc.) end with } and the enclosing block is followed by ; when shown in examples:
 
 if (cond) {
   // ...
@@ -34,7 +35,7 @@ if (cond) {
 };
 4. Identifiers & Reserved Words
 
-Valid variable names: start with a letter (A–Z, a–z), then letters, digits or underscores. Example: var1, my_value.
+Valid variable names: start with a letter (A–Z, a–z), then letters, digits or underscores. Examples: var1, my_value.
 
 Reserved keywords (cannot be used as identifiers):
 if, elif, else, repeat, wait, let, Muscles, PlaySensation, OnDamage, log, random, abs, clamp, UNKNOWN
@@ -49,7 +50,7 @@ let intensity = 80;
 
 Variables are typed implicitly by value and must be used in type-appropriate contexts.
 
-Scope: variables declared during a single OnDamage() execution are global to that execution — assignments inside if/repeat change the value for later statements in the same OnDamage run.
+Scope: variables declared during a single OnDamage() execution are global to that execution — assignments inside if / repeat change the value for later statements in the same OnDamage run.
 
 6. Conditionals
 
@@ -138,7 +139,7 @@ Out-of-range index or empty regions returns UNKNOWN.
 
 Example:
 
-PlaySensation(regions[0], 90, 80, 800, 100, 100, 0);
+PlaySensation(regions[0], 90, 80, 800, 100, 100, 0, 10);
 12. Array Methods (implementation-accurate)
 
 Note: these behaviors match the current compiler/runtime implementation. They differ slightly from a naïve API expectation — check carefully.
@@ -151,9 +152,9 @@ group1.add(ARM_L);
 
 .index(...) — NOT implemented in the current runtime. Do not rely on it; use other helpers instead.
 
-13. PlaySensation(...) — Core Function
+13. PlaySensation(...) — Core Function (UPDATED: 8 arguments)
 
-Signature (7 arguments):
+Signature (8 arguments):
 
 PlaySensation(
   Muscles,   // target muscles (Muscles type or single region expression)
@@ -162,12 +163,33 @@ PlaySensation(
   Duration,  // ms (integer)
   FadeIn,    // ms
   FadeOut,   // ms
-  ExitTime   // ms
+  ExitTime,  // ms
+  Priority   // integer >= 0 (higher = higher priority)
 );
 
-Timing semantics: the timeline advances by Duration + ExitTime after this instruction. The next instruction’s execution time is delayed by that amount.
+The first seven arguments are the same as before. The eighth (Priority) is new.
 
-Target resolution:
+Priority semantics (new)
+
+Priority is an integer (we recommend 0–100 as a convention). Larger numbers mean higher priority.
+
+Runtime behavior while a sensation is active: the runtime tracks the currently active sensation and its priority (activePriority). If a PlaySensation(...) instruction is executed while another sensation is still active (i.e., within its Duration + ExitTime window), the runtime compares priorities:
+
+If newPriority < activePriority: the new PlaySensation is ignored (no sensations are sent / queued).
+
+If newPriority >= activePriority: the currently active sensation is stopped immediately, and the new sensation starts. (In other words, equal or higher priority preempts the active sensation and replaces it.)
+
+Priority applies globally to sensations sent by the script runtime (not to unrelated engine sources). If multiple scripts or sources are involved, the runtime follows the same comparison logic for sensations it controls.
+
+Important: because preemption can shorten a currently playing sensation, timing estimates may differ between editor preview and runtime when priority-driven preemption occurs.
+
+Timing semantics (updated)
+
+Under normal (non-preempted) play, the script timeline advances by Duration + ExitTime after the PlaySensation instruction; the next instruction’s execution is delayed by that amount.
+
+If a PlaySensation is preempted by a later sensation with equal or higher priority, the preempted sensation is terminated early; its remaining time is cancelled when the preempting sensation starts. The timeline advancement for the preempted instruction is truncated accordingly (the runtime continues from the point where the preempting instruction executes).
+
+Target resolution
 
 Literal muscle names and simple Muscles groups are usually resolved at compile time.
 
@@ -175,7 +197,7 @@ Expressions involving regions, random(...), or runtime variables are resolved at
 
 Example:
 
-PlaySensation(ABDOMINAL_L, 100, 85, 1000, 200, 200, 0);
+PlaySensation(ABDOMINAL_L, 100, 85, 1000, 200, 200, 0, 50);
 14. wait(ms); — Pause
 
 wait(ms); pauses the script timeline for ms milliseconds before continuing to the next instruction.
@@ -190,7 +212,7 @@ Repeats the enclosed block count times.
 Example:
 
 repeat(3) {
-  PlaySensation(ARM_L, 80, 60, 500, 100, 100, 0);
+  PlaySensation(ARM_L, 80, 60, 500, 100, 100, 0, 20);
 };
 
 Variables modified inside a repeat iteration persist to subsequent iterations and to the remainder of the OnDamage() run.
@@ -212,7 +234,7 @@ rawAmount → damage before armor
 Example:
 
 if (amount > 5) {
-  PlaySensation(regions[0], 90, 80, 800, 100, 100, 0);
+  PlaySensation(regions[0], 90, 80, 800, 100, 100, 0, 10);
 };
 17. Type Coercion & Comparison Rules
 
@@ -238,17 +260,19 @@ Some parts of the script are compile-time analyzable (literals, static muscle li
 
 Timing estimation in tooling (editor preview) may use compile-time values; actual runtime values are what determine final timing and targets.
 
-20. Examples (complete snippets)
+Because priority-driven preemption can change which sensations actually play (and when), editor preview timing is only an estimate when Priority interactions are possible.
+
+20. Examples (complete snippets — UPDATED to include Priority)
 Example 1 — Simple conditional
 OnDamage() {
   if (amount > 5) {
-    PlaySensation(ABDOMINAL_L, 100, 85, 1000, 200, 200, 0);
+    PlaySensation(ABDOMINAL_L, 100, 85, 1000, 200, 200, 0, 30);
   } elif (type == "fire") {
-    PlaySensation(ARM_L, 80, 60, 600, 100, 100, 100);
+    PlaySensation(ARM_L, 80, 60, 600, 100, 100, 100, 40);
   } else {
     wait(200);
     repeat(2) {
-      PlaySensation(PECTORAL_L, 60, 40, 300, 50, 50, 50);
+      PlaySensation(PECTORAL_L, 60, 40, 300, 50, 50, 50, 10);
     };
   };
 };
@@ -256,13 +280,15 @@ Example 2 — Variables and randomness
 OnDamage() {
   let i = random(20, 80);
   log("random intensity {i}");
-  PlaySensation(ABDOMINAL_R, 90, i, 500, 50, 50, 0);
+  // priority 25 chosen for this effect
+  PlaySensation(ABDOMINAL_R, 90, i, 500, 50, 50, 0, 25);
 };
 Example 3 — Using regions safely
 OnDamage() {
   // play on first region if it exists; otherwise on PECTORAL_L
   let target = regions[0] == UNKNOWN ? PECTORAL_L : regions[0];
-  PlaySensation(target, 70, 60, 700, 100, 100, 50);
+  // give high priority to ensure this notification can preempt lower-priority ones
+  PlaySensation(target, 70, 60, 700, 100, 100, 50, 60);
 };
 21. Short Checklist for Authors
 
@@ -276,10 +302,20 @@ Use zero-based indexing for regions
 
 Strings may be single- or double-quoted
 
-Use wait(ms); and PlaySensation(...) to control timeline flow
+Use wait(ms); and PlaySensation(..., Priority) to control timeline & preemption flow
 
 Use random(min,max) for variability
 
 Expect safe fallbacks (UNKNOWN, 0) on invalid inputs
 
 Follow the corrected array-method behaviors (.add single item, .remove(index), .index() not available)
+
+Appendix — Priority: practical notes & recommendations
+
+Choose a clear priority range for your project (e.g., 0–100). Document what levels mean (e.g., 0 = background/ambient, 100 = critical/override). The runtime accepts any non-negative integer; larger numbers win.
+
+Use priority sparingly. Overuse can make behavior surprising (many high-priority effects will preempt each other).
+
+Be explicit in design about which sensations must not be interrupted (give them high priority) and which are decorative (low priority).
+
+Testing tip: try combinations where a low-priority long effect is interrupted by a short high-priority alert to verify that preemption behaves as you expect.
